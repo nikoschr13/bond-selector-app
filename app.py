@@ -122,7 +122,7 @@ if uploaded_file:
 
             explanation = f'This bond by {bond["Issuer"]} offers a {bond["Coupon"]}% coupon, priced at {bond["Price"]}, rated {bond["Rating"]}, with {bond["Duration"]} years maturity and {bond["Liquidity"].lower()} liquidity.'
             if "Allocation" in bond and "Weight" in bond:
-                explanation += f"
+                    explanation += f"\n\nPortfolio Allocation: ${bond['Allocation']:.2f} ({bond['Weight']*100:.2f}%)"
 
 Portfolio Allocation: ${bond['Allocation']:.2f} ({bond['Weight']*100:.2f}%)"
 
