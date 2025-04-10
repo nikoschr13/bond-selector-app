@@ -28,7 +28,7 @@ uploaded_file = st.sidebar.file_uploader("Upload Bond Data (Excel)", type=["xlsx
 sentiment_pipeline = pipeline("sentiment-analysis")
 FIGI_API_KEY = "bd64546f-c451-4e7f-b72d-441e36a868d8"
 NEWS_API_KEY = "590daf1dab92494194236e3aba131e0e"
-logo_path = "Elxi h.jpeg"
+logo_path = "elxi_logo.jpg"
 
 def fetch_news_sentiment(issuer):
     try:
