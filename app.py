@@ -97,7 +97,7 @@ def generate_pdf_reports(df, logo_path):
         pdf.set_font("Arial", "B", 14)
         pdf.cell(200, 10, f"Bond Report: {bond['ISIN']}", ln=True)
         pdf.set_font("Arial", "", 12)
-        explanation = f"This bond by {bond['Issuer']} offers a {bond['Coupon']}% coupon, priced at {bond['Price']}, rated {bond['Rating']}, with {bond['Duration']} years maturity and {bond['Liquidity'].lower()} liquidityHEADif "Allocation" in bond and "Weight" in bond:
+        explanation = f'This bond by {bond["Issuer"]} offers a {bond["Coupon"]}% coupon, priced at {bond["Price"]}, rated {bond["Rating"]}, with {bond["Duration"]} years maturity and {bond["Liquidity"].lower()} liquidity.'HEADif "Allocation" in bond and "Weight" in bond:
     explanation += f"\n\nPortfolio Allocation: ${bond['Allocation']:.2f} ({bond['Weight']*100:.2f}%)"
 3f482d3 (✨ Added portfolio optimization logic and allocation helper)
         clean_explanation = explanation.encode("latin-1", "ignore").decode("latin-1")
