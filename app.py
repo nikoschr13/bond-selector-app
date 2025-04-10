@@ -28,7 +28,7 @@ uploaded_file = st.sidebar.file_uploader("Upload Bond Data (Excel)", type=["xlsx
 sentiment_pipeline = pipeline("sentiment-analysis")
 FIGI_API_KEY = "bd64546f-c451-4e7f-b72d-441e36a868d8"
 NEWS_API_KEY = "590daf1dab92494194236e3aba131e0e"
-logo_path = "elxi_logo.jpg"
+logo_path = "Elxi h.jpeg"
 
 def fetch_news_sentiment(issuer):
     try:
@@ -97,7 +97,8 @@ def generate_pdf_reports(df, logo_path):
         pdf.cell(200, 10, f"Bond Report: {bond['ISIN']}", ln=True)
         pdf.set_font("Arial", "", 12)
         explanation = f"This bond by {bond['Issuer']} offers a {bond['Coupon']}% coupon, priced at {bond['Price']}, rated {bond['Rating']}, with {bond['Duration']} years maturity and {bond['Liquidity'].lower()} liquidity."
-        pdf.multi_cell(0, 10, explanation)
+        clean_explanation = explanation.encode("latin-1", "ignore").decode("latin-1")
+        pdf.multi_cell(0, 10, clean_explanation)
         pdf.ln(5)
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, "Recent News:", ln=True)
@@ -107,7 +108,8 @@ def generate_pdf_reports(df, logo_path):
                 title = line[line.find("[")+1:line.find("]")]
                 url = line[line.find("(")+1:line.find(")")]
                 pdf.set_text_color(0, 0, 255)
-                pdf.cell(0, 10, title, ln=True, link=url)
+                clean_title = title.encode("latin-1", "ignore").decode("latin-1")
+        pdf.cell(0, 10, clean_title, ln=True, link=url)
         report_path = os.path.join(output_dir, f"{bond['ISIN']}_report.pdf")
         pdf.output(report_path)
         pdf_paths.append(report_path)
