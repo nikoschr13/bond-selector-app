@@ -7,6 +7,7 @@ import requests
 import os
 from fpdf import FPDF
 import zipfile
+from allocation_helper import optimize_allocation
 
 st.set_page_config(page_title="AI Bond Selector", layout="wide")
 password = st.sidebar.text_input("Enter password to access the app:", type="password")
@@ -96,7 +97,9 @@ def generate_pdf_reports(df, logo_path):
         pdf.set_font("Arial", "B", 14)
         pdf.cell(200, 10, f"Bond Report: {bond['ISIN']}", ln=True)
         pdf.set_font("Arial", "", 12)
-        explanation = f"This bond by {bond['Issuer']} offers a {bond['Coupon']}% coupon, priced at {bond['Price']}, rated {bond['Rating']}, with {bond['Duration']} years maturity and {bond['Liquidity'].lower()} liquidity."
+        explanation = f"This bond by {bond['Issuer']} offers a {bond['Coupon']}% coupon, priced at {bond['Price']}, rated {bond['Rating']}, with {bond['Duration']} years maturity and {bond['Liquidity'].lower()} liquidityHEADif "Allocation" in bond and "Weight" in bond:
+    explanation += f"\n\nPortfolio Allocation: ${bond['Allocation']:.2f} ({bond['Weight']*100:.2f}%)"
+3f482d3 (✨ Added portfolio optimization logic and allocation helper)
         clean_explanation = explanation.encode("latin-1", "ignore").decode("latin-1")
         pdf.multi_cell(0, 10, clean_explanation)
         pdf.ln(5)
@@ -145,6 +148,14 @@ if uploaded_file:
     df["News"] = news_links
     df = df[df["Duration"] <= 5]
     df["final_score"] = df["sentiment_score"]
+
+# Allocation step
+st.subheader("💰 Portfolio Optimization")
+capital = st.number_input("Total Capital to Allocate", min_value=1000, value=1000000, step=10000)
+if st.button("Optimize Allocation"):
+    df = optimize_allocation(df, total_capital=capital)
+    st.success("✅ Allocation optimized")
+    st.dataframe(df)
     df = df.sort_values(by="final_score", ascending=False).reset_index(drop=True)
 
     st.subheader("📊 Top Recommended Bonds")
