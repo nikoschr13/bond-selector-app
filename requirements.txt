@@ -6,3 +6,4 @@ transformers
 fpdf
 requests
 torch
+openpyxl
